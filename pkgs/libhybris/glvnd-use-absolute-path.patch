@@ -1,0 +1,12 @@
+diff --git a/egl/glvnd/10_libhybris.json.in b/egl/glvnd/10_libhybris.json.in
+index 3f2aa0b..4927cf0 100644
+--- a/egl/glvnd/10_libhybris.json.in
++++ b/egl/glvnd/10_libhybris.json.in
+@@ -1,6 +1,6 @@
+ {
+     "file_format_version" : "1.0.0",
+     "ICD" : {
+-        "library_path" : "libEGL@GL_LIB_SUFFIX@.so.0"
++        "library_path" : "@libdir@/libEGL@GL_LIB_SUFFIX@.so.0"
+     }
+ }

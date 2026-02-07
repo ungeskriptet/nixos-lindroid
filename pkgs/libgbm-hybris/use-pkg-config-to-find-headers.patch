@@ -1,0 +1,37 @@
+From bd88aafe929c046eb6d4f4d2e90611ea555b07c7 Mon Sep 17 00:00:00 2001
+From: David Wronek <david.wronek@mainlining.org>
+Date: Sat, 14 Feb 2026 14:18:38 +0100
+Subject: [PATCH] CMake: use pkg-config to find headers
+
+Signed-off-by: David Wronek <david.wronek@mainlining.org>
+---
+ CMakeLists.txt | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b53d7bf..767d0ba 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -4,8 +4,13 @@ set(CMAKE_BUILD_TYPE Debug)
+ set(CMAKE_C_FLAGS_DEBUG "-g -O0")
+ set(LIBRARY_NAME hybris_gbm)
+ set(SOURCE_FILES main.c)
+-include_directories(/usr/include/android/ /usr/include/libdrm)
+-link_directories(/usr/lib/aarch64-linux-gnu)
++find_package(PkgConfig REQUIRED)
++pkg_check_modules(ANDROID_HEADERS REQUIRED android-headers)
++pkg_check_modules(LIBDRM REQUIRED libdrm)
++include_directories(
++	${ANDROID_HEADERS_INCLUDE_DIRS}
++	${LIBDRM_INCLUDE_DIRS}
++)
+ add_library(${LIBRARY_NAME} SHARED ${SOURCE_FILES})
+ set_target_properties(${LIBRARY_NAME} PROPERTIES PREFIX "")
+ target_link_libraries(${LIBRARY_NAME} PRIVATE gralloc)
+@@ -15,5 +20,5 @@ target_link_libraries(${LIBRARY_NAME} PRIVATE gralloc)
+ #    OUTPUT_NAME "${LIBRARY_NAME}"
+ #)
+ install(TARGETS ${LIBRARY_NAME}
+-    LIBRARY DESTINATION /usr/lib/aarch64-linux-gnu/gbm/
++    LIBRARY DESTINATION lib/gbm
+ )

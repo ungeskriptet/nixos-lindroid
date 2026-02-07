@@ -1,0 +1,18 @@
+diff --git a/platforms/common/Makefile.am b/platforms/common/Makefile.am
+index 9efecc6..d28e85c 100644
+--- a/platforms/common/Makefile.am
++++ b/platforms/common/Makefile.am
+@@ -73,10 +73,11 @@ libhybris_platformcommon_la_LDFLAGS += $(top_builddir)/libsync/libsync.la
+ endif
+ 
+ 
+-platformcommondir = $(includedir)/hybris/platformcommon
++platformcommondir = $(includedir)/hybris/platforms/common
+ platformcommon_HEADERS = \
+ 	support.h \
+-	nativewindowbase.h
++	nativewindowbase.h \
++	windowbuffer.h
+ 
+ if WANT_WAYLAND
+ libhybris_platformcommon_la_LDFLAGS += \

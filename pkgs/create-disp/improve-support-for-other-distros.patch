@@ -1,0 +1,89 @@
+From 02d18ab39d64e406870c2c43cbe3a59ca82b1d4f Mon Sep 17 00:00:00 2001
+From: David Wronek <david.wronek@mainlining.org>
+Date: Tue, 10 Feb 2026 22:20:08 +0100
+Subject: [PATCH] {CMake,systemd}: improve support for other distros
+
+CMake:
+- Use CMake to install the required files
+- Use pkg-config to discover android-headers
+
+systemd service:
+- Let CMake fill in the ExecStart= path
+- WantedBy should generally always be a target, so let's use
+  `graphical.target`
+- Use DynamicUser= instead of hardcoding a user
+
+Signed-off-by: David Wronek <david.wronek@mainlining.org>
+---
+ CMakeLists.txt                                      | 10 +++++++---
+ create-disp.service => create-disp.service.template |  6 +++---
+ debian/install                                      |  2 --
+ 3 files changed, 10 insertions(+), 8 deletions(-)
+ rename create-disp.service => create-disp.service.template (79%)
+ delete mode 100644 debian/install
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 55377ed..23e2312 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -9,16 +9,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ add_executable(create-disp create-disp.cpp)
+ 
+ find_package(PkgConfig REQUIRED)
++pkg_check_modules(ANDROID_HEADERS REQUIRED android-headers)
+ pkg_check_modules(LIBDRM REQUIRED libdrm)
+ pkg_check_modules(SYSTEMD REQUIRED libsystemd)
+ 
+-include_directories(${LIBDRM_INCLUDE_DIRS})
+ link_directories(${LIBDRM_LIBRARY_DIRS})
+ 
+ target_include_directories(create-disp PRIVATE
++    ${ANDROID_HEADERS_INCLUDE_DIRS}
++    ${LIBDRM_INCLUDE_DIRS}
+     ${SYSTEMD_INCLUDE_DIRS}
+-    /usr/include/libdrm
+-    /usr/include/android
+ )
+ 
+ target_link_libraries(create-disp
+@@ -30,3 +30,7 @@ target_link_libraries(create-disp
+     ${LIBDRM_LIBRARIES}
+     ${SYSTEMD_LIBRARIES}
+ )
++
++configure_file(create-disp.service.template create-disp.service)
++install(TARGETS create-disp DESTINATION bin)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/create-disp.service DESTINATION lib/systemd/system)
+diff --git a/create-disp.service b/create-disp.service.template
+similarity index 79%
+rename from create-disp.service
+rename to create-disp.service.template
+index 307f424..0491572 100644
+--- a/create-disp.service
++++ b/create-disp.service.template
+@@ -8,14 +8,14 @@ Type=notify
+ NotifyAccess=main
+ Restart=always
+ RestartSec=1
+-User=lindroid
++DynamicUser=true
+ LimitRTPRIO=10
+ LimitMEMLOCK=infinity
+ CPUSchedulingPolicy=fifo
+ CPUSchedulingPriority=3
+ MemoryDenyWriteExecute=no
+ LimitNOFILE=65536
+-ExecStart=/usr/bin/create-disp
++ExecStart=@CMAKE_INSTALL_PREFIX@/bin/create-disp
+ 
+ [Install]
+-WantedBy=display-manager.service
++WantedBy=graphical.target
+diff --git a/debian/install b/debian/install
+deleted file mode 100644
+index e1774fd..0000000
+--- a/debian/install
++++ /dev/null
+@@ -1,2 +0,0 @@
+-obj-*/create-disp usr/bin
+-create-disp.service lib/systemd/system

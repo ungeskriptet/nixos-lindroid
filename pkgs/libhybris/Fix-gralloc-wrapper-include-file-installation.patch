@@ -1,0 +1,30 @@
+From 2aceacb5e038e677eafdae4484d55bcae36b5060 Mon Sep 17 00:00:00 2001
+From: NeKit <nekit1000@gmail.com>
+Date: Sat, 3 Aug 2019 23:44:45 +0200
+Subject: [PATCH] Fix gralloc wrapper include file installation
+
+Origin: vendor
+Forwarded: no
+Last-Update: 2020-12-10
+---
+ include/Makefile.am | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/include/Makefile.am b/include/Makefile.am
+index 90af563..f06b772 100644
+--- a/include/Makefile.am
++++ b/include/Makefile.am
+@@ -65,6 +65,10 @@ camerainclude_HEADERS = \
+        hybris/camera/camera_compatibility_layer_configuration_translator.h \
+        hybris/camera/camera_compatibility_layer.h
+ 
++grallocincludedir = $(includedir)/hybris/gralloc
++grallocinclude_HEADERS = \
++       hybris/gralloc/gralloc.h
++
+ propertiesincludedir = $(includedir)/hybris/properties
+ propertiesinclude_HEADERS = \
+        hybris/properties/properties.h
+-- 
+2.52.0
+
