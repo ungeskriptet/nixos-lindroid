@@ -69,12 +69,17 @@ in
   };
 
   nixpkgs.overlays = [
-    (final: prev: {
-      kdePackages = prev.kdePackages // {
-        kwin = prev.kdePackages.kwin.overrideAttrs (prevPkg: {
-         patches = prevPkg.patches ++ [ ./kwin.patch ];
-        });
-      };
+    (self: super: {
+      kdePackages = (
+        super.kdePackages.overrideScope (
+          final: prev: {
+            kwin = prev.kwin.overrideAttrs (prevPkg: {
+              patches = prevPkg.patches ++ [ ./kwin.patch ];
+            });
+          }
+        )
+      );
     })
   ];
+
 }
