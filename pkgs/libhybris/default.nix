@@ -21,13 +21,13 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "libhybris";
-  version = "0-unstable-2026-01-28";
+  version = "0-unstable-2026-07-02";
 
   src = fetchFromGitHub {
     owner = "Linux-on-droid";
     repo = "libhybris";
-    rev = "bba9553f39d1ca72e886ae7940adc0fc90f23329";
-    hash = "sha256-vPWv0rfDdKnBMGEtzKnE7F4TWnv2no6veE58OkM60II=";
+    rev = "c6a03429d12202f0b198d88140610a49ab73ddb0";
+    hash = "sha256-K3OrXgH2iwkbk1hSwJuBizzEywgm1qrCNAr1tnJWanM=";
   };
 
   sourceRoot = "${finalAttrs.src.name}/hybris";
