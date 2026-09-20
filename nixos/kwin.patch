@@ -16,14 +16,14 @@ index 56aee0d8eb..3e696d0a8c 100644
      KSignalHandler::self()->watchSignal(SIGHUP);
  
 diff --git a/src/main_wayland.cpp b/src/main_wayland.cpp
-index 70432da7c8..baba002d7e 100644
+index 70432da7c8..616a821d3f 100644
 --- a/src/main_wayland.cpp
 +++ b/src/main_wayland.cpp
 @@ -291,6 +291,10 @@ int main(int argc, char *argv[])
  
      QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
  
-+    for (const QString &name : env.keys()) {
++    for (const QString &name : environment.keys()) {
 +        qInfo().noquote() << name << "=" << env.value(name);
 +    }
 +
