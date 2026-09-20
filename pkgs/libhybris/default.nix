@@ -1,10 +1,8 @@
 {
-  lib,
   stdenv,
   fetchFromGitHub,
   autoreconfHook,
   callPackage,
-  file,
   libdrm,
   libgbm,
   libglvnd,
