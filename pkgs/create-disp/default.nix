@@ -13,16 +13,16 @@ let
 in
 stdenv.mkDerivation {
   pname = "create-disp";
-  version = "0-unstable-2025-01-28";
+  version = "0-unstable-2026-07-02";
 
   src = fetchFromGitHub {
     owner = "Linux-on-droid";
     repo = "create-disp";
-    rev = "a97aa3edce8807c39bd00cdf072a24717152a1fb";
-    hash = "sha256-xeShqgutbo5n/rbmuDi9HN5e3w9eY8iyixIiuEAZf4A=";
+    rev = "46c1d0414b3acb28b5902a2cb16b5ee40c1898ce";
+    hash = "sha256-SqQb4o3wA2TdLb6M5G6qOgjne9lQ1DGw3spK4gRNTss=";
   };
 
-  patches = [ ./improve-support-for-other-distros.patch ];
+  patches = [ ./0001-Improve-support-for-other-distros.patch ];
 
   nativeBuildInputs = [
     cmake

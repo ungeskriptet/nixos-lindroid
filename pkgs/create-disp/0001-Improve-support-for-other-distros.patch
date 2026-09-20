@@ -1,7 +1,7 @@
-From 02d18ab39d64e406870c2c43cbe3a59ca82b1d4f Mon Sep 17 00:00:00 2001
+From 251752acf24beab2c4ff0d305d3cfa80bf861b90 Mon Sep 17 00:00:00 2001
 From: David Wronek <david.wronek@mainlining.org>
 Date: Tue, 10 Feb 2026 22:20:08 +0100
-Subject: [PATCH] {CMake,systemd}: improve support for other distros
+Subject: [PATCH] Improve support for other distros
 
 CMake:
 - Use CMake to install the required files
@@ -15,19 +15,19 @@ systemd service:
 
 Signed-off-by: David Wronek <david.wronek@mainlining.org>
 ---
- CMakeLists.txt                                      | 10 +++++++---
- create-disp.service => create-disp.service.template |  6 +++---
- debian/install                                      |  2 --
+ CMakeLists.txt                                | 10 +++++++---
+ create-disp.service => create-disp.service.in |  6 +++---
+ debian/install                                |  2 --
  3 files changed, 10 insertions(+), 8 deletions(-)
- rename create-disp.service => create-disp.service.template (79%)
+ rename create-disp.service => create-disp.service.in (80%)
  delete mode 100644 debian/install
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 55377ed..23e2312 100644
+index 69ba555..82bf73c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -9,16 +9,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
- add_executable(create-disp create-disp.cpp)
+@@ -13,16 +13,16 @@ add_compile_options(-Werror)
+ add_executable(create-disp create-disp_buffers.cpp  create-disp_core.cpp  create-disp_display.cpp  create-disp_threads.cpp  main.cpp)
  
  find_package(PkgConfig REQUIRED)
 +pkg_check_modules(ANDROID_HEADERS REQUIRED android-headers)
@@ -45,32 +45,33 @@ index 55377ed..23e2312 100644
 -    /usr/include/android
  )
  
- target_link_libraries(create-disp
-@@ -30,3 +30,7 @@ target_link_libraries(create-disp
+ if(TARGET_USES_REAL_HWC)
+@@ -38,3 +38,7 @@ target_link_libraries(create-disp
      ${LIBDRM_LIBRARIES}
      ${SYSTEMD_LIBRARIES}
  )
 +
-+configure_file(create-disp.service.template create-disp.service)
++configure_file(create-disp.service.in create-disp.service)
 +install(TARGETS create-disp DESTINATION bin)
 +install(FILES ${CMAKE_CURRENT_BINARY_DIR}/create-disp.service DESTINATION lib/systemd/system)
-diff --git a/create-disp.service b/create-disp.service.template
-similarity index 79%
+diff --git a/create-disp.service b/create-disp.service.in
+similarity index 80%
 rename from create-disp.service
-rename to create-disp.service.template
-index 307f424..0491572 100644
+rename to create-disp.service.in
+index dc19825..f59c52f 100644
 --- a/create-disp.service
-+++ b/create-disp.service.template
-@@ -8,14 +8,14 @@ Type=notify
++++ b/create-disp.service.in
+@@ -8,7 +8,7 @@ Type=notify
  NotifyAccess=main
  Restart=always
  RestartSec=1
 -User=lindroid
 +DynamicUser=true
- LimitRTPRIO=10
+ LimitRTPRIO=45
  LimitMEMLOCK=infinity
  CPUSchedulingPolicy=fifo
- CPUSchedulingPriority=3
+@@ -16,7 +16,7 @@ CPUSchedulingPriority=45
+ OOMScoreAdjust=-900
  MemoryDenyWriteExecute=no
  LimitNOFILE=65536
 -ExecStart=/usr/bin/create-disp
@@ -87,3 +88,6 @@ index e1774fd..0000000
 @@ -1,2 +0,0 @@
 -obj-*/create-disp usr/bin
 -create-disp.service lib/systemd/system
+-- 
+2.55.0
+
