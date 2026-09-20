@@ -22,4 +22,4 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Build
-        run: nix build -L .#nixosConfigurations.lindroid.config.system.build.toplevel
+        run: nix build --accept-flake-config -L .#nixosConfigurations.lindroid.config.system.build.toplevel
