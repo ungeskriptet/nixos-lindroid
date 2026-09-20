@@ -1,3 +1,14 @@
+From 4267a48c7dc651e12b058452bf00a8eaf1e20e25 Mon Sep 17 00:00:00 2001
+From: David Wronek <david.wronek@mainlining.org>
+Date: Sun, 20 Sep 2026 19:42:27 +0200
+Subject: [PATCH] tmp
+
+Signed-off-by: David Wronek <david.wronek@mainlining.org>
+---
+ src/helpers/wayland_wrapper/kwin_wrapper.cpp | 6 ++++++
+ src/main_wayland.cpp                         | 4 ++++
+ 2 files changed, 10 insertions(+)
+
 diff --git a/src/helpers/wayland_wrapper/kwin_wrapper.cpp b/src/helpers/wayland_wrapper/kwin_wrapper.cpp
 index 56aee0d8eb..3e696d0a8c 100644
 --- a/src/helpers/wayland_wrapper/kwin_wrapper.cpp
@@ -16,7 +27,7 @@ index 56aee0d8eb..3e696d0a8c 100644
      KSignalHandler::self()->watchSignal(SIGHUP);
  
 diff --git a/src/main_wayland.cpp b/src/main_wayland.cpp
-index 70432da7c8..616a821d3f 100644
+index 70432da7c8..c2f3185d07 100644
 --- a/src/main_wayland.cpp
 +++ b/src/main_wayland.cpp
 @@ -291,6 +291,10 @@ int main(int argc, char *argv[])
@@ -24,9 +35,12 @@ index 70432da7c8..616a821d3f 100644
      QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
  
 +    for (const QString &name : environment.keys()) {
-+        qInfo().noquote() << name << "=" << env.value(name);
++        qInfo().noquote() << name << "=" << environment.value(name);
 +    }
 +
      // enforce our internal qpa plugin, unfortunately command line switch has precedence
      setenv("QT_QPA_PLATFORM", "wayland-org.kde.kwin.qpa", true);
  
+-- 
+2.55.0
+
