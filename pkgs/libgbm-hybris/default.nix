@@ -13,13 +13,13 @@ let
 in
 stdenv.mkDerivation {
   pname = "libgbm-hybris";
-  version = "0-unstable-2026-02-10";
+  version = "0-unstable-2026-03-26";
 
   src = fetchFromGitHub {
     owner = "Linux-on-droid";
     repo = "libgbm-hybris";
-    rev = "b6c79d66ce20e02a936b3f502db7694104fc7572";
-    hash = "sha256-TDmEIimG2tetmr9z1IqWFkuQQplGr4l9IFNSQ/XyxjA=";
+    rev = "8172b8236438c54bee111f071d9f069ac5b229e9";
+    hash = "sha256-99F73SC8Db75nUyKzMcdAZn8N3MKyi4v8h6lgfD1jas=";
   };
 
   patches = [ ./use-pkg-config-to-find-headers.patch ];
