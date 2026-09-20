@@ -6,6 +6,7 @@
   libdrm,
   libgbm,
   pkg-config,
+  nix-update-script,
 }:
 let
   libhybris = callPackage ../libhybris { };
@@ -33,4 +34,16 @@ stdenv.mkDerivation {
     libgbm
     libhybris
   ];
+
+  passthru = {
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--flake"
+        "--version"
+        "branch=master"
+        "--version-regex"
+        "(0-unstable.*)"
+      ];
+    };
+  };
 }
