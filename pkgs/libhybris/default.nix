@@ -14,6 +14,7 @@
   wayland,
   wayland-protocols,
   wayland-scanner,
+  nix-update-script,
 }:
 let
   android-headers = callPackage ../android-headers { };
@@ -73,4 +74,16 @@ stdenv.mkDerivation (finalAttrs: {
     "--enable-property-cache"
     "--enable-wayland"
   ];
+
+  passthru = {
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--flake"
+        "--version"
+        "branch=lindroid-drm"
+        "--version-regex"
+        "(0-unstable.*)"
+      ];
+    };
+  };
 })
