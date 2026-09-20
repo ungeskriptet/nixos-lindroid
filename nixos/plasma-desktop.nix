@@ -2,7 +2,7 @@
 {
   services = {
     desktopManager.plasma6.enable = true;
-    displayManager.sddm.enable = true;
+    displayManager.plasma-login-manager.enable = true;
   };
 
   environment = {
@@ -23,15 +23,15 @@
     };
   };
 
-  nixpkgs.overlays = [
-    (self: super: {
-      kdePackages = (
-        super.kdePackages.overrideScope (
-          final: prev: {
-            sddm-unwrapped = prev.callPackage ../pkgs/sddm-unwrapped { };
-          }
-        )
-      );
-    })
-  ];
+  #nixpkgs.overlays = [
+  #  (self: super: {
+  #    kdePackages = (
+  #      super.kdePackages.overrideScope (
+  #        final: prev: {
+  #          sddm-unwrapped = prev.callPackage ../pkgs/sddm-unwrapped { };
+  #        }
+  #      )
+  #    );
+  #  })
+  #];
 }

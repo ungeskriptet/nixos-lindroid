@@ -11,11 +11,11 @@ let
     GBM_BACKEND = "hybris";
     KWIN_COMPOSE = "O2ES";
     KWIN_DRM_DEVICES = "/dev/dri/by-path/platform-evdi-lindroid.0-card";
-    KWIN_DRM_NO_AMS = "1";
-    KWIN_DRM_USE_MODIFIERS = "0";
     __EGL_VENDOR_LIBRARY_FILENAMES = "${selfPkgs.libhybris}/share/glvnd/egl_vendor.d/10_libhybris.json";
     __GLX_VENDOR_LIBRARY_NAME = "libhybris";
   };
+  concatLindroidEnv =
+    sep: lib.concatStringsSep sep (lib.mapAttrsToList (n: v: "${n}=${v}") lindroidEnv);
 in
 {
   console.enable = true;
@@ -33,19 +33,6 @@ in
   };
 
   services = {
-    displayManager.sddm.settings = {
-      General = {
-        DisplayServer = "wayland";
-        GreeterEnvironment = lib.concatStringsSep "," (
-          (lib.mapAttrsToList (n: v: "${n}=${v}") lindroidEnv) ++ [ "QT_WAYLAND_SHELL_INTEGRATION=xdg-shell" ]
-        );
-        InputMethod = "";
-      };
-      Wayland = {
-        CompositorCommand = "${lib.getExe' pkgs.kdePackages.kwin "kwin_wayland"} --no-global-shortcuts --no-kactivities --no-lockscreen --locale1 --inputmethod maliit-keyboard";
-      };
-
-    };
     logind.settings.Login = {
       HandlePowerKey = lib.mkForce "ignore";
       HandlePowerKeyLongPress = lib.mkForce "ignore";
@@ -63,8 +50,11 @@ in
   systemd = {
     packages = [ selfPkgs.create-disp ];
     services = {
-      create-disp.wantedBy = [ "graphical.target" ];
-      display-manager.environment = lindroidEnv;
+      create-disp = {
+        wantedBy = [ "graphical.target" ];
+        serviceConfig.SupplementaryGroups = [ "video" ];
+      };
+      plasmalogin.environment = lindroidEnv;
     };
     sockets.systemd-rfkill.enable = false;
     services.systemd-rfkill.enable = false;
@@ -77,4 +67,14 @@ in
     package = selfPkgs.libhybris;
     extraPackages = [ selfPkgs.libgbm-hybris ];
   };
+
+  nixpkgs.overlays = [
+    (final: prev: {
+      kdePackages = prev.kdePackages // {
+        kwin = prev.kdePackages.kwin.overrideAttrs (prevPkg: {
+         patches = prevPkg.patches ++ [ ./kwin.patch ];
+        });
+      };
+    })
+  ];
 }

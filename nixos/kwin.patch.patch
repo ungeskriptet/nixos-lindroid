@@ -1,0 +1,17 @@
+diff --git a/src/helpers/wayland_wrapper/kwin_wrapper.cpp b/src/helpers/wayland_wrapper/kwin_wrapper.cpp
+index 56aee0d8eb..3e696d0a8c 100644
+--- a/src/helpers/wayland_wrapper/kwin_wrapper.cpp
++++ b/src/helpers/wayland_wrapper/kwin_wrapper.cpp
+@@ -195,6 +195,12 @@ int main(int argc, char **argv)
+     QCoreApplication app(argc, argv);
+     app.setQuitLockEnabled(false); // don't exit when the first KJob finishes
+ 
++    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
++
++    for (const QString &name : env.keys()) {
++        qInfo().noquote() << name << "=" << env.value(name);
++    }
++
+     KSignalHandler::self()->watchSignal(SIGTERM);
+     KSignalHandler::self()->watchSignal(SIGHUP);
+ 
