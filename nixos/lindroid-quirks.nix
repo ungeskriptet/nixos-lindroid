@@ -106,7 +106,7 @@ in
             kwin = prev.kwin.overrideAttrs (prevPkg: {
               patches = prevPkg.patches ++ [
                 ./kwin.patch
-		./kwin-2.patch
+                ./kwin-2.patch
               ];
               version = "6.7.90";
               src = pkgs.fetchFromGitHub {
