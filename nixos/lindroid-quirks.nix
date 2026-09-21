@@ -104,10 +104,9 @@ in
         super.kdePackages.overrideScope (
           final: prev: {
             kwin = prev.kwin.overrideAttrs (prevPkg: {
-              patches = [
+              patches = prevPkg.patches ++ [
                 ./kwin.patch
-                ./kwin-2.patch
-                ./kwin-3.patch
+		./kwin-2.patch
               ];
               version = "6.7.90";
               src = pkgs.fetchFromGitHub {
