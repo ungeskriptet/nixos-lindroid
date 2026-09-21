@@ -113,7 +113,9 @@ in
         super.qt6Packages.overrideScope (
           final: prev: {
             sddm-unwrapped = prev.sddm-unwrapped.overrideAttrs (prevPkg: {
-              cmakeFlags = lib.filter (flag: flag != "-DSDDM_INITIAL_VT=1") prevPkg.cmakeFlags;
+              cmakeFlags = (lib.filter (flag: flag != "-DSDDM_INITIAL_VT=1") prevPkg.cmakeFlags) ++ [
+                "-DSDDM_INITIAL_VT=-1"
+              ];
             });
           }
         )
