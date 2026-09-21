@@ -105,8 +105,10 @@ in
           final: prev: {
             kwin = prev.kwin.overrideAttrs (prevPkg: {
               patches = prevPkg.patches ++ [
-                ./kwin.patch
-                ./kwin-2.patch
+                (pkgs.fetchpatch {
+		  url = "https://github.com/KDE/kwin/commit/21f875def7ee210b4920fceb90b379160eb38593.patch";
+		  hash = "sha256-dqC2IzMU94poVFRNBgQDHSV9ni1B1SoitTOpBC1oJfw=";
+		})
               ];
             });
           }
