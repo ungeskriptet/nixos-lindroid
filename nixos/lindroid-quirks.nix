@@ -108,13 +108,6 @@ in
                 ./kwin.patch
                 ./kwin-2.patch
               ];
-              version = "6.7.90";
-              src = pkgs.fetchFromGitHub {
-                owner = "KDE";
-                repo = "kwin";
-                tag = "v6.7.90";
-                hash = "sha256-9a/082gFhijIP6g0/yQs4NCrdKQJM6pUNSoaH3axLko=";
-              };
             });
           }
         )
