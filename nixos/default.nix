@@ -7,9 +7,10 @@
 }:
 {
   imports = [
-    "${modulesPath}/virtualisation/lxc-container.nix"
+    ../modules/lxc-container.nix
     ../modules/filesystems.nix
-    ../modules/getty.nix
+    #../modules/getty.nix
+    ../modules/pam.nix
     ./lindroid-quirks.nix
     ./plasma-desktop.nix
     ./uncompressed.nix

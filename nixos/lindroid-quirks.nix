@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  config,
   inputs,
   ...
 }:
@@ -18,7 +19,7 @@ let
     sep: lib.concatStringsSep sep (lib.mapAttrsToList (n: v: "${n}=${v}") lindroidEnv);
 in
 {
-  console.enable = true;
+  console.enable = lib.mkForce false;
 
   networking = {
     firewall.enable = lib.mkForce false;
@@ -67,9 +68,9 @@ in
       HandlePowerKeyLongPress = lib.mkForce "ignore";
     };
     udev.extraRules = ''
-      KERNEL=="card*", SUBSYSTEM=="drm", MODE="0660", GROUP="video"
-      KERNEL=="renderD*", SUBSYSTEM=="drm", MODE="0660", GROUP="render"
-      KERNEL=="event*", SUBSYSTEM=="input", MODE="0660", GROUP="input"
+      KERNEL=="card*", SUBSYSTEM=="drm", MODE="0666", GROUP="video"
+      KERNEL=="renderD*", SUBSYSTEM=="drm", MODE="0666", GROUP="render"
+      KERNEL=="event*", SUBSYSTEM=="input", MODE="0666", GROUP="input"
       ACTION=="add|change", KERNEL=="event*", ENV{ID_INPUT_IGNORE}="1", ENV{LIBINPUT_IGNORE_DEVICE}="1"
       ACTION=="add|change", KERNEL=="event*", ATTRS{name}=="Lindroid*", ENV{ID_INPUT_IGNORE}="", ENV{LIBINPUT_IGNORE_DEVICE}=""
       ACTION=="add|change", KERNEL=="event*", ATTRS{name}=="Lindroid-Keyboard-*", TAG+="seat", TAG+="master-of-seat"
@@ -83,7 +84,7 @@ in
         wantedBy = [ "graphical.target" ];
         serviceConfig.SupplementaryGroups = [ "video" ];
       };
-      plasmalogin.environment = lindroidEnv;
+      sddm.environment = lindroidEnv;
     };
     sockets.systemd-rfkill.enable = false;
     services.systemd-rfkill.enable = false;
@@ -105,6 +106,9 @@ in
             kwin = prev.kwin.overrideAttrs (prevPkg: {
               patches = prevPkg.patches ++ [ ./kwin.patch ];
             });
+           sddm-unwrapped = prev.sddm-unwrapped.overrideAttrs (prevPkg: {
+             cmakeFlags = lib.filter (flag: flag != "-DSDDM_INITIAL_VT=1") prevPkg.cmakeFlags;
+           })
           }
         )
       );
