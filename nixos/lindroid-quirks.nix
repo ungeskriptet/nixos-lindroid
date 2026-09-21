@@ -106,9 +106,9 @@ in
             kwin = prev.kwin.overrideAttrs (prevPkg: {
               patches = prevPkg.patches ++ [ ./kwin.patch ];
             });
-           sddm-unwrapped = prev.sddm-unwrapped.overrideAttrs (prevPkg: {
-             cmakeFlags = lib.filter (flag: flag != "-DSDDM_INITIAL_VT=1") prevPkg.cmakeFlags;
-           })
+            sddm-unwrapped = prev.sddm-unwrapped.overrideAttrs (prevPkg: {
+              cmakeFlags = lib.filter (flag: flag != "-DSDDM_INITIAL_VT=1") prevPkg.cmakeFlags;
+            });
           }
         )
       );
