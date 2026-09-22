@@ -126,8 +126,8 @@ in
           }
         )
       );
-      qt6 = (
-        super.qt6.overrideScope (
+      qt6 =
+        (super.qt6.overrideScope (
           final: prev: {
             qtbase = prev.qtbase.overrideAttrs (prevPkg: {
               patches = prevPkg.patches ++ [
@@ -138,8 +138,10 @@ in
               ];
             });
           }
-        )
-      );
+        ))
+        // {
+          override = prev.qt6.override;
+        };
     })
   ];
 }
