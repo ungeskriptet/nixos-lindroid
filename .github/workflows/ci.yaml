@@ -3,7 +3,8 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    - temp
+    branches:
+      - temp
 
 jobs:
   check:
