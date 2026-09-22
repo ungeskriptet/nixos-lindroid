@@ -133,7 +133,7 @@ in
               patches = prevPkg.patches ++ [
                 (pkgs.fetchpatch {
                   url = "https://raw.githubusercontent.com/droidian/qt6-base/6e7abf616bfafbaa896780e095f87764699fbbde/debian/patches/fix-hybris-robustness.patch";
-                  hash = "";
+                  hash = "sha256-1rnpDUwJTFZZbHE9kg1g4WySd4HoB4u5yWPSVdda7yw=";
                 })
               ];
             });
