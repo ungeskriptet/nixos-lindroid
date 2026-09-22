@@ -140,7 +140,7 @@ in
           }
         ))
         // {
-          override = prev.qt6.override;
+          override = super.qt6.override;
         };
     })
   ];
