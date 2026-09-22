@@ -14,6 +14,7 @@ let
     KWIN_DRM_DEVICES = "/dev/dri/by-path/platform-evdi-lindroid.0-card";
     __EGL_VENDOR_LIBRARY_FILENAMES = "${selfPkgs.libhybris}/share/glvnd/egl_vendor.d/10_libhybris.json";
     __GLX_VENDOR_LIBRARY_NAME = "libhybris";
+    QT_WAYLAND_SHELL_INTEGRATION = "xdg-shell";
   };
   concatLindroidEnv =
     sep: lib.concatStringsSep sep (lib.mapAttrsToList (n: v: "${n}=${v}") lindroidEnv);
