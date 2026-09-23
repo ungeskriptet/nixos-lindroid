@@ -12,8 +12,9 @@
     #../modules/getty.nix
     ../modules/pam.nix
     ./lindroid-quirks.nix
-    ./plasma-desktop.nix
+    #./plasma-desktop.nix
     ./uncompressed.nix
+    ./xfce.nix
   ];
 
   programs = {
