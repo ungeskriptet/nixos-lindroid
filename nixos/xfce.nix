@@ -56,7 +56,7 @@ in
       };
     };
     user.services.wvkbd = {
-      wantedBy = [ "graphical-session.target" ];
+      wantedBy = [ "default.target" ];
       after = [ "graphical-session.target" ];
       description = "Virtual keyboard";
       serviceConfig = {
@@ -67,9 +67,6 @@ in
     defaultUnit = "graphical.target";
   };
 
-  environment.etc."xdg/labwc/autostart".text = ''
-    systemctl --user --no-block start labwc-session.target
-  '';
   security.pam.services.autologin = {
     enable = true;
     startSession = true;
