@@ -15,6 +15,7 @@
     #./plasma-desktop.nix
     ./uncompressed.nix
     ./xfce.nix
+    #./phosh.nix
   ];
 
   programs = {

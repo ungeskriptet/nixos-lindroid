@@ -23,6 +23,19 @@
     };
   };
 
+  security.pam.services = {
+    plasmalogin-greeter = {
+      rules.session.systemd.settings = {
+        debug = true;
+      };
+    };
+    login = {
+      rules.session.systemd.settings = {
+        debug = true;
+      };
+    };
+  };
+
   #nixpkgs.overlays = [
   #  (self: super: {
   #    kdePackages = (
