@@ -21,11 +21,9 @@
   programs = {
     htop.enable = true;
     git.enable = true;
-    neovim = {
+    vim = {
       enable = true;
       defaultEditor = true;
-      viAlias = true;
-      vimAlias = true;
     };
   };
 
@@ -40,10 +38,20 @@
 
   users = {
     mutableUsers = false;
-    users.lindroid = {
-      isNormalUser = true;
-      hashedPassword = "";
-      extraGroups = [ "wheel" ];
+    users = {
+      lindroid = {
+        isNormalUser = true;
+        hashedPassword = "";
+        extraGroups = [ "wheel" ];
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP+HHP+nC6vrDwqEbTgiNhFnaqD3WEBgZMq7FUPWV0Ls david-w.eu"
+        ];
+      };
+      root = {
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP+HHP+nC6vrDwqEbTgiNhFnaqD3WEBgZMq7FUPWV0Ls david-w.eu"
+        ];
+      };
     };
   };
 
